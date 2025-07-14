@@ -1,0 +1,59 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to AWS ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and Push Auth Service
+        run: |
+          docker build -t ${{ secrets.ECR_AUTH_REPO }}:latest ./auth-service
+          docker push ${{ secrets.ECR_AUTH_REPO }}:latest
+
+      - name: Build and Push Project Service
+        run: |
+          docker build -t ${{ secrets.ECR_PROJECT_REPO }}:latest ./project-service
+          docker push ${{ secrets.ECR_PROJECT_REPO }}:latest
+
+      - name: Build and Push Budget Service
+        run: |
+          docker build -t ${{ secrets.ECR_BUDGET_REPO }}:latest ./budget-service
+          docker push ${{ secrets.ECR_BUDGET_REPO }}:latest
+
+      - name: Build and Push File Service
+        run: |
+          docker build -t ${{ secrets.ECR_FILE_REPO }}:latest ./file-service
+          docker push ${{ secrets.ECR_FILE_REPO }}:latest
+
+      - name: Configure kubectl
+        uses: aws-actions/eks-kubectl@v1
+        with:
+          cluster-name: ${{ secrets.EKS_CLUSTER_NAME }}
+          region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/db-secret.yaml
+          kubectl apply -f k8s/s3-secret.yaml
+          kubectl apply -f k8s/configmap.yaml
+          kubectl apply -f k8s/serviceaccount.yaml
+          kubectl apply -f k8s/rolebinding.yaml
+          kubectl apply -f k8s/auth-service-deployment.yaml
+          kubectl apply -f k8s/project-service-deployment.yaml
+          kubectl apply -f k8s/budget-service-deployment.yaml
+          kubectl apply -f k8s/file-service-deployment.yaml
+          kubectl apply -f k8s/ingress.yaml

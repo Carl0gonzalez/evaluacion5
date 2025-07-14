@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: promanage-config
+  namespace: promanage
+data:
+  AUTH_PATH: /auth
+  PROJECT_PATH: /projects
+  BUDGET_PATH: /budget
+  FILE_PATH: /files

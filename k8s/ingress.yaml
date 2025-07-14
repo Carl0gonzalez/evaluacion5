@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: promanage-ingress
+  namespace: promanage
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80},{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:123456789012:certificate/abcdef12-3456-7890-abcd-ef1234567890
+spec:
+  rules:
+  - host: promanage.example.com
+    http:
+      paths:
+      - path: /auth/*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: auth-service
+            port:
+              number: 80
+      - path: /projects/*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: project-service
+            port:
+              number: 80
+      - path: /budget/*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: budget-service
+            port:
+              number: 80
+      - path: /files/*
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: file-service
+            port:
+              number: 80

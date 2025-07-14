@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: budget-service
+  namespace: promanage
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: budget-service
+  template:
+    metadata:
+      labels:
+        app: budget-service
+    spec:
+      serviceAccountName: promanage-sa
+      containers:
+      - name: budget-service
+        image: <AWS_ACCOUNT_ID>.dkr.ecr.<REGION>.amazonaws.com/budget-service:latest
+        ports:
+        - containerPort: 3000
+        envFrom:
+        - secretRef:
+            name: db-credentials
+        - secretRef:
+            name: s3-credentials
+        - configMapRef:
+            name: promanage-config
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3000
+          initialDelaySeconds: 15
+          periodSeconds: 20
