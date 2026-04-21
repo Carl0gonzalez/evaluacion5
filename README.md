@@ -1,27 +1,49 @@
-# 📘 evaluacion5
+# ProManage DevOps Setup
 
-Repositorio académico/técnico asociado a una evaluación, conservado como evidencia de trabajo práctico y avance formativo.
+Este repositorio contiene la configuración para desarrollo local con Docker Compose y despliegue en Kubernetes (AWS EKS).
 
----
+## Estructura de carpetas
 
-## 📌 Objetivo
-
-Resguardar el entregable y dejar una mínima documentación de contexto para facilitar su revisión futura.
-
-## 🧩 Enfoque
-
-El repositorio puede contener ejercicios, archivos fuente, documentación o recursos asociados al proceso evaluativo.
-
-## ▶️ Uso
-
-Clona el repositorio y revisa su estructura interna para identificar el flujo técnico o académico correspondiente.
-
-```bash
-git clone git@github.com:Carl0gonzalez/evaluacion5.git
-cd evaluacion5
+```
+/
+├── auth-service/
+│   └── Dockerfile
+├── project-service/
+│   └── Dockerfile
+├── budget-service/
+│   └── Dockerfile
+├── file-service/
+│   └── Dockerfile
+├── docker-compose.yml
+├── .env.sample
+├── k8s/
+│   ├── namespace.yaml
+│   ├── db-secret.yaml
+│   ├── s3-secret.yaml
+│   ├── configmap.yaml
+│   ├── serviceaccount.yaml
+│   ├── rolebinding.yaml
+│   ├── auth-service-deployment.yaml
+│   ├── project-service-deployment.yaml
+│   ├── budget-service-deployment.yaml
+│   ├── file-service-deployment.yaml
+│   └── ingress.yaml
+├── .github/
+│   └── workflows/
+│       └── deploy.yml
+└── ARCHITECTURE_REPORT.md
 ```
 
-## 👤 Autor
+## Desarrollo local
 
-**Carlo González**
+1. Copia `.env.sample` a `.env` y ajusta variables si es necesario.
+2. Ejecuta:
+   ```bash
+   docker-compose up --build
+   ```
+3. Accede a `http://localhost:8080`.
 
+## Despliegue en producción
+
+1. Configura secretos en GitHub Actions (`ECR_*`, `EKS_CLUSTER_NAME`, `AWS_REGION`).
+2. Empuja cambios a `main` y el pipeline se encargará de build y deploy automático.
