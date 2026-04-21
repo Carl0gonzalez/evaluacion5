@@ -1,27 +1,20 @@
 # 📘 evaluacion5
 
-Repositorio académico/técnico asociado a una evaluación, conservado como evidencia de trabajo práctico y avance formativo.
+Repositorio asociado a una **evaluación técnica o académica**, conservado como evidencia de trabajo y referencia futura.
 
----
+## Descripción
 
-## 📌 Objetivo
+El contenido puede incluir código, documentación o recursos vinculados al entregable evaluativo. El repositorio se mantiene como parte del historial de aprendizaje y práctica.
 
-Resguardar el entregable y dejar una mínima documentación de contexto para facilitar su revisión futura.
+## Objetivo
 
-## 🧩 Enfoque
+Preservar el trabajo desarrollado y dejar un punto de entrada mínimo para su revisión posterior.
 
-El repositorio puede contener ejercicios, archivos fuente, documentación o recursos asociados al proceso evaluativo.
+## Uso
 
-## ▶️ Uso
+Explora la estructura interna del proyecto según el contexto de la evaluación.
 
-Clona el repositorio y revisa su estructura interna para identificar el flujo técnico o académico correspondiente.
-
-```bash
-git clone git@github.com:Carl0gonzalez/evaluacion5.git
-cd evaluacion5
-```
-
-## 👤 Autor
+## Autor
 
 **Carlo González**
 
